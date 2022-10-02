@@ -1,0 +1,58 @@
+Input file : SLQ3.txt
+Levelling Type : Double-run
+Route : GCP-11 --> BMSLQ
+*** Warning*** name appears >=2 times: GCP-10 (2)
+*** Warning*** name appears >=2 times: TP01 (2)
+*** Warning*** name appears >=2 times: TP02 (2)
+*** Warning*** name appears >=2 times: TP03 (2)
+*** Warning*** name appears >=2 times: GCP-07 (2)
+*** Warning*** name appears >=2 times: GCP-12 (2)
+*** Warning*** name appears >=2 times: GCP-03 (2)
+*** Warning*** name appears >=2 times: GCP-11 (2)
+*** Warning*** name appears >=2 times: BMSLQ (2)
+Limit staff reading ||U-M|-|M-L||   : <= 0.002 m
+Limit setup BS and FS distance      : <= 10.0 m
+Limit accumulaed BS and FS distance : <= 20.0 m
+Limtit height closure               : 12 mm*sqrt(km)
+----------------------------------------------------------------------
+Given Height Station GCP-11 : 0.980 meter
+| Station  |       UML_BS            UML_FS       | Height  |
+|  GCP-11  |  1.881 1.657 1.431 0.980             |   0.980 |
+|  GCP-12  |  1.689 1.381 1.072 1.858 1.650 1.442 |   0.986 |
+|   TP01   |  1.530 1.383 1.234 1.871 1.576 1.282 |   0.791 |
+|  GCP-10  |  1.713 1.472 1.231 1.633 1.462 1.290 |   0.711 |
+|   TP02   |  1.752 1.616 1.482 1.628 1.415 1.202 |   0.768 |
+|  GCP-03  |  1.781 1.561 1.340 1.610 1.457 1.304 |   0.928 |
+|   TP03   |  1.501 1.342 1.185 1.740 1.531 1.322 |   0.958 |
+|  GCP-07  |  1.660 1.549 1.438 1.409 1.242 1.075 |   1.058 |
+|  BMSLQ   |                    1.710 1.556 1.401 |   1.052 |
+Accum. BS dist : 309.4 m
+Accum. FS dist : 314.1 m
+----------------------------------------------------------------------
+| Station  |       UML_BS            UML_FS       | Height  |
+|  BMSLQ   |  1.550 1.402 1.253                   |   1.052 |
+|  GCP-07  |  1.438 1.270 1.102 1.512 1.396 1.279 |   1.058 |
+|   TP01   |  1.700 1.518 1.334 1.544 1.369 1.194 |   0.959 |
+|  GCP-03  |  1.608 1.468 1.327 1.782 1.548 1.314 |   0.928 |
+*** diff ||BS|-|FS|| = 10.2 > 10.0 m
+|   TP02   |  1.714 1.479 1.242 1.769 1.635 1.501 |   0.761 |
+|  GCP-10  |  1.674 1.499 1.322 1.763 1.527 1.290 |   0.712 |
+|   TP03   |  1.939 1.632 1.325 1.560 1.417 1.274 |   0.794 |
+|  GCP-12  |  1.925 1.662 1.401 1.733 1.438 1.141 |   0.988 |
+|  GCP-11  |                    1.901 1.668 1.434 |   0.983 |
+Accum. BS dist : 633.6 m
+Accum. FS dist : 627.8 m
+----------------------------------------------------------------------
+| Station |  Fwd.H    Bwd.H   |  Diff.  |  Mean   |  Corr.  | Final.H |
+| GCP-11  |   0.980    0.983  |  -0.003 |  0.9817 | -0.0017 |  0.9800 |
+| GCP-12  |   0.986    0.988  |  -0.002 |  0.9873 | -0.0017 |  0.9857 |
+| GCP-10  |   0.711    0.712  |  -0.001 |  0.7118 | -0.0017 |  0.7102 |
+| GCP-03  |   0.928    0.928  |  -0.000 |  0.9280 | -0.0017 |  0.9263 |
+| GCP-07  |   1.058    1.058  |   0.001 |  1.0580 | -0.0017 |  1.0563 |
+| BMSLQ   |   1.052    1.052  |   0.000 |  1.0517 | -0.0017 |  1.0500 |
+----------------------------------------------------------------------
+Total levelling run(s)       : 1261.4 m
+Total distance               : 630.7 m
+Limit closure for this line  : 9.5 mm
+Actual closure for this line : 3.3 mm (OK!)
+*** Number of technical warning(s) : 10
