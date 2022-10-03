@@ -1,0 +1,19 @@
+#
+#
+# Resection from 3-known points, unknowns point is
+# 'PX'. For this example the number of equations
+# is equal to unknows.  So, 
+#
+#
+UNK_PNT : 
+        1: PX
+
+PNT:
+        PX: [   95.0,   15.   ]   # initial guess
+        P1: [   0.000,   0.000 ]
+        P2: [  50.000,  50.000 ]
+        P3: [ 100.000, 100.000 ]
+ 
+ANG:
+        1:  [ P1,PX,P2,45.0 ]
+        2:  [ P2,PX,P3,45.0 ]
