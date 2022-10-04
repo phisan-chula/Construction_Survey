@@ -1,0 +1,19 @@
+#
+# 3-known points intersecting to an unknow point PX
+# 4 angles are observed from known points (P1,P2,P3) 
+# to the unknow point PX
+#
+UNK_PNT : 
+        1: PX
+
+PNT:
+        PX: [ 105.6  ,  15.5   ]   # initial guess
+        P1: [   0.000,   0.000 ]
+        P2: [   0.000, 100.000 ]
+        P3: [ 100.000, 100.000 ]
+ 
+ANG:
+        1:  [ PX,P2,P1,45.0000 ]
+        2:  [ P3,P2,PX,45.0000 ]
+        3:  [ PX,P3,P2,90.0000 ]
+        4:  [ P2,P1,PX,90.0000 ]  
