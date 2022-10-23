@@ -1,0 +1,42 @@
+#
+# Adjustment of Planned Surveying and Geodetic Networks
+#Using Second-Order Nonlinear Programming Methods
+#Murat Mustafin and Dmitry Bykasov
+#  MDPI compuation : 2022
+#
+#
+#
+
+WEIGHT :
+        - [ANG  , 20   ]   # sec
+        - [DIST , 0.02 ]    #  meter
+        - [DIR ,  1  ]      # sec
+
+
+FIX_PNT:
+        - [ A, 645.112,   426.229 ]
+        - [ B, 1028.568,  857.277 ]
+        - [ C, 740.339,  1333.496 ]
+
+NEW_PNT:
+        - [ P1, 210.0000, 1235.000 ]
+        - [ P2, 575.0000, 869.000 ]
+        - [ P3, 150.0000, 580.000 ]
+        - [ P4, -135.0000, 950.000 ]
+        - [ P5, 40.0000, 285.000 ]
+ 
+DIST: 
+    - [ C , P2, 492.886 ]
+    - [ B , P2, 448.178 ]
+    - [ A , P2, 445.726 ]
+    - [ A , P3, 512.201 ]
+    - [ P3 , P2, 504.961 ]
+    - [ P2 , P4, 733.414 ]
+    - [ P2 , P1, 523.911 ]
+    - [ P1 , C, 534.601 ]
+    - [ P3 , P1, 654.977 ]
+    - [ P3 , P4, 482.249 ]
+    - [ P4 , P1, 456.648 ]
+    - [ P5 , A, 617.706 ]
+    - [ P5 , P3, 322.978 ]
+    - [ P5 , P4, 700.240 ]
