@@ -11,7 +11,7 @@ traverse stations and then generate two linear referencing list of points namely
    coming designed route alignment.
 3) GIS file of those surveying components.
 <br/>
-Example of input traverse station<br/>
+Example of input traverse station in CSV format, H might be updated later from levelling work<br/>
 Sta,EPSG,E,N,H<br/>
 P-01,32647,542694.651,1560574.888,999.999<br/>
 P-02,32647,542898.406,1560557.387,999.999<br/>
