@@ -4,6 +4,7 @@
 # Author Phisan Santitamnont
 # Faculty of Engineering, Chulalongkorn University (phisan.chula@gmail.com )
 # version 0.21 : 20 Dec 2022
+#         0.3  : change Proj(LL).get_factors to Proj(UTM) to get correct scale factors
 #
 #
 import pandas as pd
@@ -18,7 +19,7 @@ fiona.drvsupport.supported_drivers['KML'] = 'rw'
 
 UTM = 'epsg:32647'
 LL  = 'epsg:4326'
-UTM_to_LL = Transformer.from_crs( UTM, 'epsg:4326' , always_xy=True )
+UTM_to_LL = Transformer.from_crs( UTM, LL , always_xy=True )
 ###########################################################################
 DIV = 50     # STATION DIVISION
 CACHE = './CACHE'
@@ -26,19 +27,19 @@ CACHE = './CACHE'
 ###########################################################################
 TRV = './Data/CampTravENH.csv'
 df = pd.read_csv( TRV )
-dfTRV = gpd.GeoDataFrame( df, crs='EPSG:32647', 
+dfTRV = gpd.GeoDataFrame( df, crs=UTM,
             geometry=gpd.points_from_xy( df.E, df.N ) )
 print( f'Reading traversing file {TRV}...' )
 
 LS = LineString( dfTRV[['E','N']].to_numpy() )
 print( f'Length = {LS.length:,.3f} meter')
-dfLS = gpd.GeoDataFrame( {'Name':['TravLine'] } , crs='EPSG:32647',
+dfLS = gpd.GeoDataFrame( {'Name':['TravLine'] } , crs=UTM,
            geometry=[ LS, ] )
 ###########################################################################
 def CalcLR( row ):
     LngLat =  UTM_to_LL.transform( row.E, row.N )
     dist = LS.project( Point(row.E,row.N ), normalized=False ) 
-    sf =  Proj(LL).get_factors( *LngLat ).meridional_scale
+    sf =  Proj(UTM).get_factors( *LngLat ).meridional_scale
     return LngLat[1],LngLat[0], dist, sf  
 dfTRV[['Lat','Lng','dist_m', 'PSF']] = dfTRV.apply( 
                            CalcLR, axis=1, result_type='expand' )
