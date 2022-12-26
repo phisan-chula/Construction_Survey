@@ -8,6 +8,7 @@ PROG='''
         
 
 '''
+import sys 
 import numpy as np 
 import pandas as pd
 import geopandas as gpd
@@ -21,12 +22,19 @@ from fiona.drvsupport import supported_drivers
 supported_drivers['LIBKML'] = 'rw'
 
 class CircularCurve:
-    def __init__(self, CURVE_DATA,DIV=50 ):
+    def __init__(self, ARGS ):
+        self.ARGS = ARGS
         self.CACHE = Path( './CACHE' )
-        print(f'Wrinting result "csv|pdf|png|gpkg" into ./{self.CACHE}/...')
+        print(f'Writing result "csv|pdf|png|gpkg" into ./{self.CACHE}/...')
         self.CACHE.mkdir(parents=True, exist_ok=True)
-        self.LS_ALIGN, self.RADIUS = CURVE_DATA
-        self.DIV = DIV
+        if type(ARGS) is dict:  # self testing mode
+            self.LS_ALIGN =  ARGS['CURVE']
+            self.RADIUS, self.DIV = ARGS['RADIUS'], ARGS['DIV']
+            self.TEXT = ARGS['TEXT']
+        else:
+            self.LS_ALIGN = LineString(np.array( eval(args.align) ).tolist())
+            self.RADIUS, self.DIV = float(ARGS.radius) , float(ARGS.division)
+            self.TEXT = ARGS.t
         assert( len(self.LS_ALIGN.coords) ==3 ),'***ERROR*** limit 3 points on LS_ALIGN'
         pc,pi,pt = list(self.LS_ALIGN.coords)
         vcPC = Vector.from_points( pc,pi )
@@ -92,13 +100,13 @@ class CircularCurve:
         pM  = LineString( [pO,pPI] ).interpolate( self.RADIUS, normalized=False )
         return [ LineString([pO,pPC]), LineString([pO,pM]) , LineString([pO,pPT]) ]
 
-    def DoPlot(self, POC_TEXT=True):
+    def DoPlot(self):
         fig, ax = plt.subplots( figsize=(20,18))
         self.dfLS.plot( ax=ax ) 
-        for i,row in self.dfPnt.iloc[4:].iterrows(): 
+        for i,row in self.dfPnt.iloc[5:-1].iterrows():  # skit first and last !
             x =  row.geometry.x ; y =  row.geometry.y
             ax.scatter( x, y, c='k', s=30, alpha=0.5 )
-            if POC_TEXT:
+            if self.TEXT:
                 ax.text( x,y, s=row['Name'], c='g', fontsize=15 )
         for i,row in self.dfPnt.iloc[0:4].iterrows(): 
             x =  row.geometry.x ; y =  row.geometry.y
@@ -141,34 +149,31 @@ USAGE = '''python3 CurvePnts.py -a [542939.592,1560557.148],[543219.123,1560612.
 ###############################################################################
 ###############################################################################
 ###############################################################################
-xCURVE = LineString( [ [0,0],[0,1000],[-1000,2000] ] ), 1200 # PC-PI-PT, Radius
-xCURVE = LineString( [ [0,0],[0,1000],[1000,2000] ] ), 1200 # PC-PI-PT, Radius
-xCURVE = LineString( [ [0,0],[1000,0],[2000,-1000] ] ), 1200 # PC-PI-PT, Radius
-xCURVE = LineString( [ [0,2000],[0,0],[2000,0] ] ), 1200 # PC-PI-PT, Radius
-xCURVE = LineString( [ [2000,0],[0,0],[0,2000] ] ), 1200 # PC-PI-PT, Radius
-xCURVE = LineString( [ [2000,-300],[0,0],[0,2000] ] ), 1200 # PC-PI-PT, Radius
-xCURVE = LineString( [ [0,0],[1000,0],[1800,-1000] ] ), 500 # PC-PI-PT, Radius
-xCURVE = LineString( [ [542939.592,1560557.148],[543219.123,1560612.552],
-                      [543408.493,1560534.688] ] ), 200 # PC-PI-PT, Radius
-import argparse
-parser = argparse.ArgumentParser(description=PROG,usage=USAGE )
-parser.add_argument( '-a','--align', action='store',             
-            help='3-point of alignment "[E,N],[E,N],[E,N]" for circular curve design' )
-parser.add_argument( '-r','--radius', action='store',
-            help='design value of the radius in meter' )
-parser.add_argument( '-d','--division', action='store',
-            help='desired division of the point-on-curve in meter' )
-parser.add_argument( '-t','-t', action='store_true',
-            help='annotate text for curve distance at each division')
-args = parser.parse_args()
-
-P3 = np.array( eval(args.align) ).tolist()
-RADIUS = float(args.radius)
-CURVE = [ LineString(P3), RADIUS ]
-DIV = float(args.division)
-cc = CircularCurve( CURVE, DIV=DIV )
-#cc.DoPlot( POC_TEXT=True )
-cc.DoPlot( POC_TEXT=False )
+if len(sys.argv)==1:
+    xCURVE = LineString( [ [0,0],[0,1000],[-1000,2000] ] ), 1200 # PC-PI-PT, Radius
+    xCURVE = LineString( [ [0,0],[0,1000],[1000,2000] ] ), 1200 # PC-PI-PT, Radius
+    xCURVE = LineString( [ [0,0],[1000,0],[2000,-1000] ] ), 1200 # PC-PI-PT, Radius
+    xCURVE = LineString( [ [0,2000],[0,0],[2000,0] ] ), 1200 # PC-PI-PT, Radius
+    xCURVE = LineString( [ [2000,0],[0,0],[0,2000] ] ), 1200 # PC-PI-PT, Radius
+    xCURVE = LineString( [ [2000,-300],[0,0],[0,2000] ] ), 1200 # PC-PI-PT, Radius
+    xCURVE = LineString( [ [0,0],[1000,0],[1800,-1000] ] ), 500 # PC-PI-PT, Radius
+    CURVE = LineString( [ [542939.592,1560557.148],[543219.123,1560612.552],
+                          [543408.493,1560534.688] ] ) # PC-PI-PT, Radius
+    args = { 'CURVE': CURVE , 'RADIUS':200 , 'DIV':20, 'TEXT': True }
+else:
+    import argparse
+    parser = argparse.ArgumentParser(description=PROG, usage=USAGE )
+    parser.add_argument( '-a','--align', action='store',             
+                help='3-point of alignment "[E,N],[E,N],[E,N]" for circular curve design' )
+    parser.add_argument( '-r','--radius', action='store',
+                help='design value of the radius in meter' )
+    parser.add_argument( '-d','--division', action='store',
+                help='desired division of the point-on-curve in meter' )
+    parser.add_argument( '-t','-text', action='store_true',
+                help='annotate text for curve distance at each division')
+    args = parser.parse_args()
+cc = CircularCurve( args )
+cc.DoPlot( )
 print( cc.dfPnt )
 cc.WriteCurve()
 print('@@@@@@@@@@@@@@@@@ end of  CurvePnt @@@@@@@@@@@@@@@@@@@@')
