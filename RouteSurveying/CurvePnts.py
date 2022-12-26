@@ -34,7 +34,7 @@ class CircularCurve:
         else:
             self.LS_ALIGN = LineString(np.array( eval(args.align) ).tolist())
             self.RADIUS, self.DIV = float(ARGS.radius) , float(ARGS.division)
-            self.TEXT = ARGS.t
+            self.TEXT = ARGS.text
         assert( len(self.LS_ALIGN.coords) ==3 ),'***ERROR*** limit 3 points on LS_ALIGN'
         pc,pi,pt = list(self.LS_ALIGN.coords)
         vcPC = Vector.from_points( pc,pi )
@@ -169,7 +169,7 @@ else:
                 help='design value of the radius in meter' )
     parser.add_argument( '-d','--division', action='store',
                 help='desired division of the point-on-curve in meter' )
-    parser.add_argument( '-t','-text', action='store_true',
+    parser.add_argument( '-t','--text', action='store_true',
                 help='annotate text for curve distance at each division')
     args = parser.parse_args()
 cc = CircularCurve( args )
