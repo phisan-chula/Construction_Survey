@@ -3,6 +3,10 @@
 #                a control line. Mangenetic declication (WMM2020) is also
 #                calculate. If specified date in include each line of 
 #                control point ( YYYY-MM-DD )
+# History : 19 Sept. 2020 : P.Santitamnont ( phisan.chula@gmai.com )
+# 
+# Remark : need external package 'geographiclib/Magnetic'
+#
 #
 import sys 
 import numpy as np
@@ -54,7 +58,6 @@ for i in range( len(gdfCTRL)//2 ):
 dfLine = pd.DataFrame( line , columns=['STA', 'BS', 
            'gridDist', 'gridAz', 'gridAz_', 'trueDist', 'trueAz', 'trueAz_', 'geometry']  )
 gdfLine = gpd.GeoDataFrame( dfLine, crs='EPSG:4326', geometry=dfLine.geometry )
-#import pdb; pdb.set_trace()
 
 def MagDecl( row ):
     if 'Date' in row.keys():
@@ -74,4 +77,4 @@ Path('./CACHE').mkdir(parents=True, exist_ok=True)
 gdfLine.to_file( './CACHE/CtrlLinePnt.gpkg', layer='CntrolLine', driver='GPKG' )
 gdfCTRL.to_file( './CACHE/CtrlLinePnt.gpkg', layer='CntrolPoint', driver='GPKG' )
 print( '************** end ***************')
-
+#import pdb; pdb.set_trace()
