@@ -33,7 +33,7 @@
 |  5 | R176      | 1507479.055 | 665979.979 | 2023-11-01 |
 
 
-## การใช้งานโปรแกรม  GridGeodLine.py ตามด้วยชื่อ CSV  ไฟล์จะอ่านเข้า เช่น</br>
+## การใช้งานโปรแกรม ให้พิมพ์ชื่อโปรแกรม GridGeodLine.py ตามด้วยชื่อข้อมูลนำเข้าที่เป็น CSV เช่น</br>
 python3 GridGeodLine.py MWA_CK_Ctrl_dt.csv</br>
 </br>
 Reading control file MWA_CK_Ctrl_dt.csv ...</br>
