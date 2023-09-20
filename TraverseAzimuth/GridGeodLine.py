@@ -41,6 +41,7 @@ else:
 
 print( f'Reading control file {FILE:} ...' )
 df = pd.read_csv( FILE )
+print( df.to_markdown( floatfmt='.3f') )
 
 gdfCTRL = gpd.GeoDataFrame( df, crs='EPSG:32647', 
         geometry=gpd.points_from_xy( df.Easting, df.Northing ) )
@@ -67,14 +68,25 @@ def MagDecl( row ):
     cmd = f'MagneticField -n wmm2020 -p 10 --input-string "{dt:} {row.geometry.y:} {row.geometry.x:}"'
     res = sp.run( [cmd], shell=True, capture_output=True, text=True )
     decli = toDMS( float(res.stdout.split()[0]) )
-    #import pdb; pdb.set_trace()
     return dt, decli
 gdfCTRL[['Date','Decli']] = gdfCTRL.apply( MagDecl, axis=1, result_type='expand' ) 
 
-print( gdfCTRL[ ['STATION', 'Northing', 'Easting', 'Date', 'Decli'] ] )
-print( gdfLine[ ['STA', 'BS', 'gridDist', 'gridAz', 'gridAz_', 'trueDist', 'trueAz', 'trueAz_' ] ] )
+###############################################################################
 Path('./CACHE').mkdir(parents=True, exist_ok=True)
 gdfLine.to_file( './CACHE/CtrlLinePnt.gpkg', layer='CntrolLine', driver='GPKG' )
 gdfCTRL.to_file( './CACHE/CtrlLinePnt.gpkg', layer='CntrolPoint', driver='GPKG' )
+
+
+gdfCTRL = gdfCTRL[ ['STATION', 'Northing', 'Easting', 'Date', 'Decli'] ] 
+gdfLine = gdfLine[ ['STA', 'BS', 'gridDist', 'gridAz', 'gridAz_', 'trueDist', 'trueAz', 'trueAz_' ] ] 
+for col in gdfLine.columns:
+    if col[-2:]=='Az':
+        gdfLine[col] = gdfLine[col].map( '{:.9f}°'.format ).astype(str) 
+    elif col[-4:]=='Dist':
+        gdfLine[col] = gdfLine[col].map( '{:.3f}'.format ) 
+
+
+print( gdfCTRL.to_markdown( floatfmt='.3f' ) )
+print( gdfLine.to_markdown( floatfmt='.3f' ) )
 print( '************** end ***************')
 #import pdb; pdb.set_trace()
